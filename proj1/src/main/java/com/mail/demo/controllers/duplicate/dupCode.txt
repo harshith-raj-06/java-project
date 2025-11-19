@@ -1,0 +1,181 @@
+//package com.mail.demo.controllers.duplicate;
+//
+//import java.util.ArrayList;
+//
+//import org.springframework.web.bind.annotation.*;
+//
+//@RestController
+//public class dupCode{
+//    private static ArrayList<User> users = new ArrayList<>(); //list of users
+//    private static ArrayList<Inbox> inboxes = new ArrayList<>();
+//
+//    @GetMapping("/dob/{name}")
+//    public String showDOB(@PathVariable String name){
+//        for(User u : users){
+//            if(u.getName() != null && (u.getName()).equals(name)) return u.getDOB();
+//        }
+//        //System.out.println("No Mails in Inbox");
+//        return "User doesn't exist";
+//    }
+//
+//    @PostMapping("/createUser")
+//    public String createAccount(@RequestBody User user){
+//        for(User u : users){
+//            if(u.getName() != null && (u.getName()).equals(user.getName())) return "User already exists!";
+//        }
+//
+//        User new_user = new User();
+//        new_user.setName(user.getName());
+//        new_user.setEmail(user.getEmail());
+//        new_user.setDOB(user.getDOB());
+//        new_user.setPassword(user.getPassword());
+//        new_user.setGender(user.getGender());
+//        users.add(new_user);
+//
+//        Inbox new_inbox = new Inbox();
+//        new_inbox.setEmail(user.getEmail());
+//        inboxes.add(new_inbox);
+//
+//        return "User created successfully😊";
+//    }
+//
+//    @GetMapping("/getUsers")
+//    public ArrayList<User> showUsers(){
+//        return users;
+//    }
+//
+//    //send mail
+//    @PostMapping("/sendMail")
+//    public String sendMail(@RequestBody Mail m){
+//        for(Inbox i : inboxes){
+//            if(i.getEmail() != null && (i.getEmail()).equals(m.getSentby())){
+//                i.addMail(m);
+//                return "Sent Successfully";
+//            }
+//        }
+//        return "Please provide valid receivers mail!";
+//    }
+//
+//    @GetMapping("/showInbox/{mail}")
+//    public ArrayList<Mail> showInbox(@PathVariable String mail){
+//        for(Inbox i : inboxes){
+//            if(i.getEmail().equals(mail)){
+//                return i.getMails();
+//            }
+//        }
+//        //System.out.println("No Mails in Inbox");
+//        return null;  //if possible use exception and return a print statement
+//    }
+//}
+//
+//class User {
+//    //private String firstName;
+//    private String name;
+//    private String email;
+//    private String dob; //dd-mm-yyyy
+//    private String gender;
+//    private String password;
+//
+//    public String getEmail() {
+//        return email;
+//    }
+//
+//    public void setEmail(String email) {
+//        this.email = email;
+//    }
+//
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String Name) {
+//        this.name = Name;
+//    }
+//
+//    public String getDOB() {
+//        return dob;
+//    }
+//
+//    public void setDOB(String DOB) {
+//        this.dob = DOB;
+//    }
+//
+//    public String getPassword() {
+//        return password;
+//    }
+//
+//    public void setPassword(String password) {
+//        this.password = password;
+//    }
+//
+//    public String getGender() {
+//        return gender;
+//    }
+//
+//    public void setGender(String gender) {
+//        this.gender = gender;
+//    }
+//}
+//
+////sentby and sendto
+//class Mail{
+//    private String sentby;
+//    private String subject;
+//    private String body;
+//    private String time;
+//
+//    public String getSentby() {
+//        return sentby;
+//    }
+//
+//    public void setSentby(String sentby) {
+//        this.sentby = sentby;
+//    }
+//
+//    public String getSubject() {
+//        return subject;
+//    }
+//
+//    public void setSubject(String subject) {
+//        this.subject = subject;
+//    }
+//
+//    public String getBody() {
+//        return body;
+//    }
+//
+//    public void setBody(String body) {
+//        this.body = body;
+//    }
+//
+//    public String getTime() {
+//        return time;
+//    }
+//
+//    public void setTime(String time) {
+//        this.time = time;
+//    }
+//
+//}
+//
+//class Inbox{
+//    private String email;
+//    private ArrayList<Mail> mails = new ArrayList<>();;
+//
+//    public String getEmail() {
+//        return email;
+//    }
+//
+//    public void setEmail(String email) {
+//        this.email = email;
+//    }
+//
+//    public ArrayList<Mail> getMails() {
+//        return mails;
+//    }
+//
+//    public void addMail(Mail m) {
+//        mails.add(m);
+//    }
+//
+}
