@@ -59,23 +59,68 @@ public class Login{
     public ArrayList<Mail> showInbox(@PathVariable String Gmail){
         return data.showInbox(Gmail);
     }
+
+    ///////////////////////////////////////////////////////////////////pranav
+    @DeleteMapping("/{Gmail}/deleteMail")
+    public String deleteMail(@PathVariable String Gmail, @RequestBody Templogin i){          //enter id in raw Text
+        return data.deleteMail(Gmail, i.getId());
+    }
+
+    @DeleteMapping("/{Gmail}/deleteUser")
+    public String deleteUser(@PathVariable String Gmail, @RequestBody Templogin password){  //enter password in raw Text
+        return data.deleteUser(Gmail, password.getPassword());
+    }
+    //////////////////////////////////////////////////////////////////
+
+    @PostMapping("/{Gmail}/saveDraft")
+    public String SaveDraft(@RequestBody DraftMail d, @PathVariable String Gmail){
+        return data.saveDraftMail(d);
+
+    }
+    @GetMapping("/{Gmail}/showDraft")
+    public ArrayList<DraftMail> showDraft(@PathVariable String Gmail){
+        return data.showDrafts(Gmail);
+    }
+
+
+    /// use mail id instead of temp2 & temp3 object and also in "/{Gmail}/deleteMail"
+    /// also delete the draft from drafts arraylist
+    @PostMapping("/{Gmail}/sendDraft")
+    public String SendDraft(@RequestBody Templogin a, @PathVariable String Gmail){
+
+        DraftMail temp=data.GetDraftMail(a.getName(),Gmail);
+        if(temp != null){
+            return data.sendDraftmail(temp);
+        }
+        return  "failed";
+
+    }
 }
 
-                                                //sentby and sendto
+//sentby and sendto
 class Mail{
     private String sentby;
     private String sendto;
     private String subject;
     private String body;
     private String time;
+    private static int unique = 0;
+    private int id;
 
+    Mail(){
+        id=unique++;
+    }
     public String getSendto() {
         return sendto;
     }
 
-    public void setSendto(String sendto) {
-        this.sendto = sendto;
+    public int getId() {
+        return id;
     }
+
+    public void setSendto(String sendto) {
+this.sendto = sendto;
+}
 
     public String getSentby() {
         return sentby;
@@ -111,9 +156,28 @@ class Mail{
 
 }
 
+class DraftMail extends Mail{
+    public boolean sent=false;//maybe add some note to the draft
+
+    public Mail send(){
+        if(!sent) {
+            Mail mail = new Mail();
+            mail.setBody(getBody());
+            mail.setSendto(getSendto());
+            mail.setSentby(getSentby());
+            mail.setTime(getTime());
+            mail.setSubject(getSubject());
+            sent=true;
+            return mail;
+        }
+        return null;
+    }
+}
+
 class Inbox{
     private String email;
     private ArrayList<Mail> mails = new ArrayList<>();
+    private ArrayList<DraftMail> draftmails = new ArrayList<>();
 
     public String getEmail() {
         return email;
@@ -126,9 +190,13 @@ class Inbox{
     public ArrayList<Mail> getMails() {
         return mails;
     }
+    public ArrayList<DraftMail> getDraftMails() { return draftmails; }
 
     public void addMail(Mail m) {
         mails.add(m);
     }
 
+    public void addDraftMail(DraftMail M){
+        draftmails.add(M);
+    }
 }
