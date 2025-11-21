@@ -120,6 +120,7 @@ class Mail{
     private String sendto;
     private String subject;
     private String body;
+    private Importance importance = Importance.DEFAULT;  // importance --- prady
     private String time;
     private static int unique = 0;
     private int id;
@@ -171,6 +172,14 @@ this.sendto = sendto;
         this.time = time;
     }
 
+    public Importance getImportance() {
+        return importance;
+    }
+
+    public void setImportance(Importance importance) {
+        this.importance = importance;
+    }
+
 }
 
 class DraftMail extends Mail{
@@ -208,7 +217,13 @@ class Inbox{
     public ArrayList<Mail> getMails() {
         return mails;
     }
+    public void setMails(ArrayList<Mail> mails) {
+        this.mails = mails;    // IMPORTANT for JSON read
+    }
     public ArrayList<DraftMail> getDraftMails() { return draftmails; }
+    public void setDraftMails(ArrayList<DraftMail> draftmails) {
+        this.draftmails = draftmails;   // IMPORTANT for JSON read
+    }
 
     public void addMail(Mail m) {
         mails.add(m);
