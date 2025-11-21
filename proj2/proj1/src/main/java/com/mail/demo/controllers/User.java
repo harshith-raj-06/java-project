@@ -6,6 +6,8 @@ public class User {
     private String password;
     private String dob;
     private String gender;
+    private int count=0;
+    private boolean spam=false;
 
     public String getDOB() {
         return dob;
