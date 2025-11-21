@@ -95,6 +95,21 @@ public class Login{
         return  "failed";
 
     }
+
+    @PutMapping("/{Gmail}/archiveMail/{id}")
+    public String archiveMail(@PathVariable String Gmail,@PathVariable int id){
+        return data.archiveMail(Gmail,id);
+    }
+
+    @GetMapping("/{Gmail}/showArchive")
+    public ArrayList<Mail> showArchive(@PathVariable String Gmail){
+        return data.showArchive(Gmail);
+    }
+
+    @PutMapping("/{Gmail}/unarchiveMail/{id}")
+    public String unarchiveMail(@PathVariable String Gmail,@PathVariable int id){
+        return data.unarchiveMail(Gmail,id);
+    }
 }
 
 //sentby and sendto
@@ -178,6 +193,7 @@ class Inbox{
     private String email;
     private ArrayList<Mail> mails = new ArrayList<>();
     private ArrayList<DraftMail> draftmails = new ArrayList<>();
+    private ArrayList<Mail> archivedMails=new ArrayList<>();
 
     public String getEmail() {
         return email;
@@ -198,5 +214,13 @@ class Inbox{
 
     public void addDraftMail(DraftMail M){
         draftmails.add(M);
+    }
+
+    public ArrayList<Mail> getArchivedMails(){
+        return archivedMails;
+    }
+
+    public void addToArchive(Mail m){
+        archivedMails.add(m);
     }
 }

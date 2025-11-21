@@ -48,6 +48,12 @@ public class Data {
         for(Inbox i : inboxes){
             if((i.getEmail()).equals(body.getSendto())){
                 i.addMail(body);
+                break;
+            }
+        }
+        for(Inbox i : inboxes){
+            if((i.getEmail()).equals(body.getSentby())){
+                i.addMail(body);
                 return "Sent Successfully";
             }
         }
@@ -132,4 +138,47 @@ public class Data {
         return null;
     }
 
+    public String archiveMail(String gmail,int id){
+        for(Inbox inbox : inboxes){
+            if(inbox.getEmail().equals(gmail)){
+                ArrayList<Mail> mails=inbox.getMails();
+                for(Mail m:mails){
+                    if(m.getId()==id){
+                        inbox.addToArchive(m);
+                        mails.remove(m);
+                        return "Mail archived successfully!";
+                    }
+                }
+                return "Invalid Mail ID";
+            }
+        }
+        return "Invalid Gmail!";
+    }
+
+    public ArrayList<Mail> showArchive(String gmail){
+        for(Inbox inbox:inboxes){
+            if(inbox.getEmail().equals(gmail)){
+                return inbox.getArchivedMails();
+            }
+        }
+        return null;
+    }
+
+    public String unarchiveMail(String gmail,int id){
+        for(Inbox i:inboxes){
+            if(i.getEmail().equals(gmail)){
+                ArrayList<Mail> archived=i.getArchivedMails();
+                ArrayList<Mail> mails=i.getMails();
+                for(Mail m: archived){
+                    if(m.getId()==id){
+                        archived.remove(m);
+                        mails.add(m);
+                        return "Mail unarchived successfully!";
+                    }
+                }
+                return "Invalid Mail ID!";
+            }
+        }
+        return "Invalid Gmail!";
+    }
 }
