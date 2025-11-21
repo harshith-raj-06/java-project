@@ -9,6 +9,10 @@ public class Data {
     private static ArrayList<User> users = new ArrayList<>(); //list of users
     private static ArrayList<Inbox> inboxes = new ArrayList<>();
 
+
+
+    private static ArrayList<Mail> junkMail= new ArrayList<>();
+
     public ArrayList<User> getUsers() {
         return users;
     }
@@ -20,6 +24,12 @@ public class Data {
 //    public ArrayList<Inbox> getInboxes() {
 //        return inboxes;
 //    }
+public static ArrayList<Mail> getJunkMail() {
+    return junkMail;
+}
+
+
+
 
     public ArrayList<Mail> showInbox(String Gmail){
         for(Inbox i : inboxes){
@@ -76,7 +86,9 @@ public class Data {
             if(i.getEmail().equals(Gmail)){
                 for(Mail m : i.getMails()){
                     if(m.getId() == id){
+                        junkMail.add(m);
                         i.getMails().remove(m);
+
                         return "Deleted successfully";
                     }
                 }

@@ -61,6 +61,8 @@ public class Login{
     }
 
     ///////////////////////////////////////////////////////////////////pranav
+    @GetMapping("/getJunk")
+    public ArrayList<Mail> showJunk(){return data.getJunkMail();}
     @DeleteMapping("/{Gmail}/deleteMail")
     public String deleteMail(@PathVariable String Gmail, @RequestBody Templogin i){          //enter id in raw Text
         return data.deleteMail(Gmail, i.getId());
