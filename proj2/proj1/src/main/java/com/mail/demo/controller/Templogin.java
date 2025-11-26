@@ -1,8 +1,4 @@
-package com.mail.demo.controllers;
-
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
+package com.mail.demo.controller;
 
 public class Templogin{
 private String email;

@@ -1,4 +1,4 @@
-package com.mail.demo.controllers;
+package com.mail.demo.controller;
 
 public class User {
     private String email;
