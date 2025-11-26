@@ -25,6 +25,15 @@ public class SecurityConfig {
             "/error"
     );
 
+    private static final List<String> API_KEY_EXCLUSIONS = PUBLIC_ENDPOINTS; // only these bypass API key
+
+    private static final List<String> BASIC_AUTH_EXCLUSIONS = List.of(
+            "/loginPage/createUser",
+            "/loginPage/login",
+            "/error",
+            "/loginPage/getJunk" // ← needs API key but not Basic Auth
+    );
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    ApiKeyAuthFilter apiKeyAuthFilter,

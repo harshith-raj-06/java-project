@@ -1,7 +1,7 @@
 package com.mail.demo.config;
 
-import com.mail.demo.controllers.Data;
-import com.mail.demo.controllers.User;
+import com.mail.demo.controller.Data;
+import com.mail.demo.controller.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,4 +27,3 @@ public class JsonBackedUserDetailsService implements UserDetailsService {
                 .build();
     }
 }
-

@@ -3,6 +3,7 @@ package com.mail.demo.controllers;
 import java.security.Principal;
 import java.util.ArrayList;
 
+import com.mail.demo.controller.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -10,9 +11,9 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController    //check this out
 @RequestMapping("/loginPage")
 public class Login{
-    private final Data data;
+    private final com.mail.demo.controller.Data data;
 
-    public Login(Data data) {
+    public Login(com.mail.demo.controller.Data data) {
         this.data = data;
     }
 
@@ -135,132 +136,15 @@ public class Login{
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access Denied");
         }
     }
-}
-
-//sentby and sendto
-class Mail{
-    private String sentby;
-    private String sendto;
-    private String subject;
-    private String body;
-    private Importance importance = Importance.DEFAULT;  // importance --- prady
-    private String time;
-    private static int unique = 0;
-    private int id;
-
-    Mail(){
-        id=unique++;
-    }
-    public String getSendto() {
-        return sendto;
+    //////////////////////////////////////////////////
+    @PostMapping("/{Gmail}/setScheduledMail")
+    public String setScheduledMail(@RequestBody ScheduledMail m, @PathVariable String Gmail){
+        return data.scheduleMail(m, Gmail);
     }
 
-    public int getId() {
-        return id;
+    @GetMapping("/{Gmail}/showScheduledMails")
+    public ArrayList<ScheduledMail> showScheduledMails(@PathVariable String Gmail){
+        return data.showScheduledMails(Gmail);
     }
-
-    public void setSendto(String sendto) {
-this.sendto = sendto;
-}
-
-    public String getSentby() {
-        return sentby;
-    }
-
-    public void setSentby(String sentby) {
-        this.sentby = sentby;
-    }
-
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public Importance getImportance() {
-        return importance;
-    }
-
-    public void setImportance(Importance importance) {
-        this.importance = importance;
-    }
-
-}
-
-class DraftMail extends Mail{
-    public boolean sent=false;//maybe add some note to the draft
-
-    public Mail send(){
-        if(!sent) {
-            Mail mail = new Mail();
-            mail.setBody(getBody());
-            mail.setSendto(getSendto());
-            mail.setSentby(getSentby());
-            mail.setTime(getTime());
-            mail.setSubject(getSubject());
-            sent=true;
-            return mail;
-        }
-        return null;
-    }
-}
-
-class Inbox{
-    private String email;
-    private ArrayList<Mail> mails = new ArrayList<>();
-    private ArrayList<DraftMail> draftmails = new ArrayList<>();
-    private ArrayList<Mail> archivedMails=new ArrayList<>();
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public ArrayList<Mail> getMails() {
-        return mails;
-    }
-    public void setMails(ArrayList<Mail> mails) {
-        this.mails = mails;    // IMPORTANT for JSON read
-    }
-    public ArrayList<DraftMail> getDraftMails() { return draftmails; }
-    public void setDraftMails(ArrayList<DraftMail> draftmails) {
-        this.draftmails = draftmails;   // IMPORTANT for JSON read
-    }
-
-    public void addMail(Mail m) {
-        mails.add(m);
-    }
-
-    public void addDraftMail(DraftMail M){
-        draftmails.add(M);
-    }
-
-    public ArrayList<Mail> getArchivedMails(){
-        return archivedMails;
-    }
-
-    public void addToArchive(Mail m){
-        archivedMails.add(m);
-    }
+    /////////////////////////////////////////////////
 }
