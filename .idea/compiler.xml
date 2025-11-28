@@ -2,6 +2,7 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Annotation profile for login" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -15,8 +16,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="demo (2)" />
         <module name="demo" />
         <module name="demo (1)" />
+        <module name="secfinal" />
       </profile>
     </annotationProcessing>
   </component>
@@ -24,7 +27,9 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="demo" options="-parameters" />
       <module name="demo (1)" options="-parameters" />
+      <module name="demo (2)" options="-parameters" />
       <module name="login" options="-parameters" />
+      <module name="secfinal" options="-parameters" />
     </option>
   </component>
 </project>

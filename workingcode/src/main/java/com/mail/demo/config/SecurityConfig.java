@@ -20,18 +20,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private static final List<String> PUBLIC_ENDPOINTS = List.of(
-            "/loginPage/createUser",
-            "/loginPage/login",
+            "/wemail/loginPage/createUser",
+            "/wemail/loginPage/login",
             "/error"
     );
 
     private static final List<String> API_KEY_EXCLUSIONS = PUBLIC_ENDPOINTS; // only these bypass API key
 
     private static final List<String> BASIC_AUTH_EXCLUSIONS = List.of(
-            "/loginPage/createUser",
-            "/loginPage/login",
-            "/error",
-            "/loginPage/getJunk" // ← needs API key but not Basic Auth
+            "/wemail/loginPage/createUser",
+            "/wemail/loginPage/login",
+            "/error"
+            // ← needs API key but not Basic Auth
     );
 
     @Bean

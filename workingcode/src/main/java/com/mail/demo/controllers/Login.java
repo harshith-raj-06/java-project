@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController    //check this out
-@RequestMapping("/loginPage")
+@RequestMapping("/wemail")
 public class Login{
     private final com.mail.demo.controller.Data data;
 
@@ -27,14 +27,14 @@ public class Login{
         return "User doesn't exist";
     }
 
-    @PostMapping ("/login")
+    @PostMapping ("/loginPage/login")
     public String loginlist(@RequestBody Templogin temp){
         if(data.validateLogin(temp)) return "Login successful...";
 
         return "Login failed mail id or password is incorrect ";
     }
 
-    @PostMapping("/createUser")
+    @PostMapping("/loginPage/createUser")
     public String createAccount(@RequestBody User user){
         if(data.userExists(user)) return "User already exists!";
 
