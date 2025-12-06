@@ -67,6 +67,7 @@ public class Data {
             });
 
         } catch (Exception e) {
+            e.printStackTrace();
             users = new ArrayList<>();
             inboxes = new ArrayList<>();
         }
@@ -132,33 +133,58 @@ public class Data {
         } // prady
     }
 
-    public String sendMail(Mail body, String Gmail) {
+    public String sendMail(Mail body, String gmail) {
         ZonedDateTime indiaTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE dd/MM/yyyy HH:mm");
 
         body.setTime(indiaTime.format(formatter));
 
-        for (Inbox i : inboxes) {
-            if (i.getEmail() != null && (i.getEmail()).equals(body.getSendto())) {
-                i.addMail(body);
-                try {
-                    writeToJson(INBOX_FILE, inboxes);
-                } catch (Exception ignored) {
-                } // prady
+        if (body == null || gmail == null) {
+            return "Invalid request: missing mail or sender";
+        }
+
+        String sentBy = body.getSentby();
+        String sendTo = body.getSendto();
+        if (sentBy == null || sendTo == null) {
+            return "Invalid mail: missing from/to fields";
+        }
+
+//        // Optional: ensure provided gmail matches the mail's sender
+//        if (!gmail.equalsIgnoreCase(sentBy)) {
+//            return "Sender mismatch";
+//        }
+
+        // 1) Check if sender is flagged as spammer (mark mail spam if so)
+        for (User u : users) {
+            if (u != null && u.getEmail() != null && u.getEmail().equalsIgnoreCase(sentBy) && u.isSpammer()) {
+                body.setSpamMail(true);
                 break;
             }
         }
-        for (Inbox i : inboxes) {
-            if (i.getEmail() != null && (i.getEmail()).equals(body.getSentby())) {
-                i.addMail(body);
-                try {
-                    writeToJson(INBOX_FILE, inboxes);
-                } catch (Exception ignored) {
-                } // prady
-                return "Sent Successfully";
+
+        for(Inbox i : inboxes){
+            if(i.getEmail() != null && (i.getEmail()).equals(body.getSentby())){
+                i.addSentMail(body);
+                try {writeToJson(INBOX_FILE, inboxes); } catch (Exception ignored) {}  //prady
             }
         }
+
+        for(Inbox i : inboxes){
+            if(i.getEmail() != null && (i.getEmail()).equals(body.getSendto())){
+                if (body.isSpamMail()) {
+                    i.addSpamMail(body);
+                    try {writeToJson(INBOX_FILE, inboxes);} catch (Exception ignored) {}  //prady
+                    return "Sent to Spam Mail";
+                } else {
+                    i.addMail(body);
+                    try {writeToJson(INBOX_FILE, inboxes);} catch (Exception ignored) {}  //prady
+                    return "Sent Successfully";
+                }
+            }
+        }
+
         return "Please provide valid receivers mail!";
+
     }
 
     public boolean userExists(User user) {
@@ -377,5 +403,77 @@ public class Data {
     @Scheduled(fixedRate = 60000) // runs every 1 min
     public void scheduledMailChecker() {
         checkAndSendScheduledMails();
+    }
+
+    public ArrayList<Mail> showJunk(String Gmail){
+        for (Inbox i: inboxes){
+            if(i.getEmail().equals(Gmail)){
+                return i.getJunkMail();
+            }
+        }
+        return null;
+    }
+    public ArrayList<Mail> showSpam(String Gmail){
+        for(Inbox i:inboxes){
+            if(i.getEmail().equals(Gmail))
+            {
+                return i.getSpam();
+            }
+        }
+        return null;
+    }
+    public ArrayList<Mail> showSentMail(String Gmail){
+        for(Inbox i:inboxes){
+            if(i.getEmail().equals(Gmail))
+            {
+                return i.getSentMails();
+            }
+        }
+        return null;
+    }
+
+    public String ReportSpam(String reportedMail, String gmail, int id) {
+
+        boolean userFound = false;
+        boolean mailFound = false;
+
+
+        for (User u : users) {
+            if (u.getEmail().equals(reportedMail)) {
+                u.addReporter(gmail);
+                userFound = true;
+                break;
+            }
+        }
+
+
+        for (Inbox inbox : inboxes) {
+            if (inbox.getEmail().equals(gmail)) {
+
+                for (Mail m : inbox.getMails()) {
+                    if (m.getId() == id) {
+                        inbox.addSpamMail(m);
+                        m.setSpamMail(true);
+                        inbox.removeMail(m);
+                        mailFound = true;
+                        break;
+                    }
+                }
+
+                break;
+            }
+        }
+
+
+        if (!userFound) return "Reported user not found!";
+        if (!mailFound) return "Mail ID not found in user's inbox!";
+        try {
+            writeToJson(USERS_FILE, users);
+            writeToJson(INBOX_FILE, inboxes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "Spam reported successfully.";
     }
 }

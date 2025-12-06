@@ -27,8 +27,8 @@ public class Data {
     private static ArrayList<Inbox> inboxes = new ArrayList<>();
 
     // ----------------------------------------------------------------------------------------------- prady
-    private static final Path USERS_FILE = Path.of("proj1/data/users.json");
-    private static final Path INBOX_FILE = Path.of("proj1/data/inbox.json");
+    private static final Path USERS_FILE = Path.of("data/users.json");
+    private static final Path INBOX_FILE = Path.of("data/inbox.json");
 
     private static final ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
 

@@ -11,6 +11,7 @@ public class Mail{
     private String time;
     private static int unique = 0;
     private int id;
+    private boolean isSpamMail=false;
 
     Mail(){
         id=unique++;
@@ -67,4 +68,12 @@ public class Mail{
         this.importance = importance;
     }
 
+    public boolean isSpamMail() {
+        return isSpamMail;
+    }
+
+    public void setSpamMail(boolean spamMail) {
+        isSpamMail = spamMail;
+    }
 }
+

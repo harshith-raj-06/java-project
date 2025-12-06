@@ -17,16 +17,6 @@ public class Login{
         this.data = data;
     }
 
-    @GetMapping("/dob/{name}")
-    public String showDOB(@PathVariable String name){
-//        for(User u : users){
-//            if(u.getName() != null && (u.getName()).equals(name)) return u.getDOB();
-//        }
-
-        //System.out.println("No Mails in Inbox");
-        return "User doesn't exist";
-    }
-
     @PostMapping ("/loginPage/login")
     public String loginlist(@RequestBody Templogin temp){
         if(data.validateLogin(temp)) return "Login successful...";
@@ -139,6 +129,7 @@ public class Login{
     //////////////////////////////////////////////////
     @PostMapping("/{Gmail}/setScheduledMail")
     public String setScheduledMail(@RequestBody ScheduledMail m, @PathVariable String Gmail){
+        //assertOwnership(Gmail, principal);
         return data.scheduleMail(m, Gmail);
     }
 
@@ -147,4 +138,25 @@ public class Login{
         return data.showScheduledMails(Gmail);
     }
     /////////////////////////////////////////////////
+    @GetMapping("/{Gmail}/showSentMail")
+    public ArrayList<Mail> showSent(@PathVariable String Gmail){
+        return data.showSentMail(Gmail);
+    }
+
+    @GetMapping("/{Gmail}/getJunk")
+    public ArrayList<Mail> showJunk(@PathVariable String Gmail){return data.showJunk(Gmail);}
+
+    @GetMapping("/{Gmail}/getSpam")
+    public ArrayList<Mail> showSpam(@PathVariable String Gmail){return data.showSpam(Gmail);}
+
+    @PostMapping("/{Gmail}/{id}/spamMail")
+    public String Report(@RequestBody Templogin b,@PathVariable String Gmail,@PathVariable int id){
+        String ReportedMail=b.getEmail();
+        if (ReportedMail == null) {
+            return "Email cannot be null";
+        }
+
+        String result = data.ReportSpam(ReportedMail, Gmail, id);
+        return result;
+    }
 }
