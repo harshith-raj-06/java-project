@@ -1,9 +1,2 @@
-# java-project - iwnandj
-import java.util.*
-public class README{
-  public static class main(String args[]){
-  }
-}
---Pranavpepepepepepepepepepepep
---Dhanush
---final push😔
+Report for the Project is given in "Java Report.pdf".
+Final code is in "WeMail" folder.
